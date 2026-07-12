@@ -1,0 +1,15 @@
+name: Feature request
+description: Đề xuất tính năng
+title: "feature: "
+labels: [enhancement]
+body:
+  - type: textarea
+    attributes:
+      label: Vấn đề cần giải quyết
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Giải pháp đề xuất
+    validations:
+      required: true

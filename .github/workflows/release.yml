@@ -1,0 +1,62 @@
+name: Release package
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  package-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Static self-host smoke
+        run: npm run test:static
+
+      - name: Self-host config readiness
+        run: npm run test:self-host
+
+      - name: Audit high severity dependencies
+        run: npm run audit
+
+      - name: SBOM validity
+        run: npm run test:sbom
+
+      - name: OSS package readiness
+        run: npm run test:oss
+
+      - name: Package release
+        run: npm run package:release
+
+      - name: Verify checksums
+        run: cd release && sha256sum -c SHA256SUMS
+
+      - name: Upload release package
+        uses: actions/upload-artifact@v4
+        with:
+          name: 99draw-release-package
+          path: release/
+          if-no-files-found: error

@@ -1,0 +1,65 @@
+{
+  "name": "99draw",
+  "private": true,
+  "version": "1.0.0",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "test:e2e:ci": "playwright test --grep-invert \"export visual goldens\"",
+    "test:e2e:edge": "PLAYWRIGHT_EDGE=1 playwright test tests/e2e/editor-smoke.spec.ts --project=edge",
+    "test:a11y": "node scripts/a11y-lighthouse.mjs",
+    "test:static": "npm run build && node scripts/static-smoke.mjs",
+    "test:self-host": "node scripts/validate-self-host-config.mjs",
+    "test:docker": "node scripts/docker-smoke.mjs",
+    "audit": "npm audit --audit-level=high",
+    "check:release-blockers": "node scripts/check-release-blockers.mjs",
+    "rc:local": "npm test && npm run build && npm run test:static && npm run test:self-host && npm run test:e2e && npm run test:a11y && npm run audit && npm run test:sbom && npm run test:oss && npm run benchmark && npm run benchmark:workflow",
+    "rc:full": "npm run rc:local && npm run benchmark:browser && npm run test:e2e:edge && npm run test:docker",
+    "package:release": "node scripts/package-release.mjs",
+    "benchmark": "node scripts/benchmark.mjs",
+    "benchmark:browser": "npm run build && node scripts/browser-benchmark.mjs",
+    "benchmark:workflow": "npm run build && node scripts/workflow-benchmark.mjs",
+    "sbom": "npm sbom --sbom-format cyclonedx --json",
+    "test:sbom": "node scripts/validate-sbom.mjs",
+    "test:oss": "node scripts/validate-oss-package.mjs",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/klee3721/99draw.git"
+  },
+  "bugs": {
+    "url": "https://github.com/klee3721/99draw/issues"
+  },
+  "homepage": "https://github.com/klee3721/99draw#readme",
+  "dependencies": {
+    "@xyflow/react": "^12.9.2",
+    "elkjs": "^0.11.1",
+    "html-to-image": "^1.11.13",
+    "jspdf": "^4.2.1",
+    "lucide-react": "^0.468.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.61.1",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.4.1",
+    "chrome-launcher": "^1.2.1",
+    "lighthouse": "^13.4.0",
+    "typescript": "~5.7.2",
+    "vite": "^6.1.0",
+    "vite-plugin-pwa": "^1.3.0",
+    "vitest": "^4.1.10"
+  },
+  "overrides": {
+    "lighthouse": {
+      "@sentry/node": "^10.65.0"
+    }
+  }
+}

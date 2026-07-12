@@ -1,0 +1,21 @@
+name: Bug report
+description: Báo lỗi có thể tái hiện
+title: "bug: "
+labels: [bug]
+body:
+  - type: textarea
+    attributes:
+      label: Các bước tái hiện
+      description: Các bước nhỏ nhất để lỗi xuất hiện.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Kỳ vọng và kết quả thực tế
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Trình duyệt và phiên bản 99draw
+    validations:
+      required: true

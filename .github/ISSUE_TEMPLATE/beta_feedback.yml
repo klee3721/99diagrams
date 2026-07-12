@@ -1,0 +1,60 @@
+name: Beta feedback
+description: Báo kết quả chạy beta/manual smoke cho 99draw
+title: "beta: "
+labels: [beta-feedback]
+body:
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Mức độ
+      options:
+        - blocker — mất dữ liệu, export hỏng hoặc không thể hoàn thành task chính
+        - major — lỗi rõ nhưng có cách né
+        - minor — khó chịu nhỏ hoặc copy/UI chưa mượt
+        - idea — đề xuất cho bản sau
+    validations:
+      required: true
+  - type: dropdown
+    id: diagram
+    attributes:
+      label: Sơ đồ đã dùng
+      options:
+        - Product flow
+        - Release checklist
+        - Architecture map
+        - Bug triage swimlane
+        - Sơ đồ thật của tôi
+    validations:
+      required: true
+  - type: textarea
+    id: task
+    attributes:
+      label: Task đã thử
+      description: Ví dụ thêm node, nối edge, undo/redo, reload, export JSON/SVG/PNG/PDF.
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: Kết quả thực tế
+      description: Điều gì xảy ra? Nếu có mất dữ liệu hoặc export hỏng, ghi rõ bước cuối cùng trước lỗi.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Kết quả mong muốn
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Trình duyệt / hệ điều hành / phiên bản 99draw
+      placeholder: "Chrome 126 / macOS / v1.0.0"
+    validations:
+      required: true
+  - type: textarea
+    id: attachments
+    attributes:
+      label: File hoặc ảnh minh chứng
+      description: Đính kèm `.99draw.json`, ảnh chụp, SVG/PNG/PDF export nếu có thể.

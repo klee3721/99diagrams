@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-build-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium firefox webkit
+
+      - name: Static self-host smoke
+        run: npm run test:static
+
+      - name: Self-host config readiness
+        run: npm run test:self-host
+
+      - name: Install PDF renderer
+        run: sudo apt-get update && sudo apt-get install -y poppler-utils
+
+      - name: E2E smoke
+        run: npm run test:e2e:ci
+
+      - name: Install Microsoft Edge
+        run: npx playwright install msedge
+
+      - name: Edge branded smoke
+        run: npm run test:e2e:edge
+
+      - name: Lighthouse accessibility
+        run: npm run test:a11y
+
+      - name: Audit high severity dependencies
+        run: npm run audit
+
+      - name: SBOM validity
+        run: npm run test:sbom
+
+      - name: OSS package readiness
+        run: npm run test:oss
+
+      - name: Docker self-host smoke
+        run: npm run test:docker
