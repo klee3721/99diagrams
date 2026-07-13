@@ -4,7 +4,7 @@ Use this checklist before cutting a public release or `v1.0.x` patch.
 
 ## Scope freeze
 
-- Confirm the release scope in `docs/v1-completion-plan.md`.
+- Confirm the release scope against the local planning notes kept outside Git.
 - Move feature requests outside the release scope to a future milestone.
 - Update `CHANGELOG.md` with user-facing changes and known limitations.
 - Review `docs/release-candidate.md` and keep known limitations current.

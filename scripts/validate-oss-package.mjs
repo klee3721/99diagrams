@@ -72,10 +72,6 @@ const markdownFiles = [
 ]
 
 const docsFiles = [
-  'docs/roadmap.md',
-  'docs/v1-execution-plan.md',
-  'docs/v1-completion-plan.md',
-  'docs/v1-finalization-plan.md',
   'docs/release-checklist.md',
   'docs/release-candidate.md',
   'docs/release-notes-v1.0.0.md',

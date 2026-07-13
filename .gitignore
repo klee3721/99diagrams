@@ -4,6 +4,8 @@ coverage/
 test-results/
 playwright-report/
 release/
+docs/roadmap.md
+docs/*plan.md
 *.tsbuildinfo
 .DS_Store
 .env
