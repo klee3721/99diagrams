@@ -12,6 +12,7 @@ export type SwimlaneData = {
 export type DiagramNodeData = {
   label: string
   kind: NodeKind
+  shapeType?: string
   fill: string
   stroke: string
   textColor: string
@@ -30,7 +31,10 @@ export type SwimlaneMembership = {
   laneLabel: string
 }
 
-export const storageKey = '99draw:document:v1'
+const previousProductSlug = ['99', 'draw'].join('')
+
+export const storageKey = '99diagrams:document:v1'
+export const previousStorageKey = `${previousProductSlug}:document:v1`
 export const maxDocumentBytes = 5 * 1024 * 1024
 export const maxEmbeddedImageBytes = 2 * 1024 * 1024
 
@@ -48,16 +52,16 @@ export const kindDefaults: Record<NodeKind, Omit<DiagramNodeData, 'label' | 'kin
 }
 
 const defaultLabels: Record<NodeKind, string> = {
-  start: 'Bắt đầu',
-  process: 'Bước xử lý',
-  decision: 'Điều kiện?',
-  input: 'Dữ liệu vào/ra',
-  document: 'Tài liệu',
-  database: 'Dữ liệu',
-  note: 'Ghi chú',
-  group: 'Nhóm',
-  swimlane: 'Vai trò',
-  image: 'Ảnh',
+  start: 'Start',
+  process: 'Process step',
+  decision: 'Condition?',
+  input: 'Input/output',
+  document: 'Document',
+  database: 'Data',
+  note: 'Note',
+  group: 'Group',
+  swimlane: 'Role',
+  image: 'Image',
 }
 
 export function createNode(kind: NodeKind, position: { x: number; y: number }, label?: string, id: string = crypto.randomUUID()): DiagramNode {
@@ -84,13 +88,14 @@ export function createEdge(source: string, target: string, id: string = crypto.r
   }
 }
 
-export function createStarterDiagram(): DiagramSnapshot {
+export function createStarterDiagram(language: 'en' | 'vi' = 'en'): DiagramSnapshot {
+  const label = (vi: string, en: string) => language === 'vi' ? vi : en
   const nodes: DiagramNode[] = [
-    createNode('start', { x: 310, y: 60 }, 'Bắt đầu', 'start'),
-    createNode('process', { x: 300, y: 190 }, 'Nhận yêu cầu', 'process'),
-    createNode('decision', { x: 310, y: 335 }, 'Hợp lệ?', 'decision'),
-    createNode('process', { x: 80, y: 495 }, 'Yêu cầu bổ sung', 'process-1'),
-    createNode('process', { x: 530, y: 495 }, 'Hoàn tất', 'process-2'),
+    createNode('start', { x: 310, y: 60 }, label('Bắt đầu', 'Start'), 'start'),
+    createNode('process', { x: 300, y: 190 }, label('Nhận yêu cầu', 'Receive request'), 'process'),
+    createNode('decision', { x: 310, y: 335 }, label('Hợp lệ?', 'Valid?'), 'decision'),
+    createNode('process', { x: 80, y: 495 }, label('Yêu cầu bổ sung', 'Request details'), 'process-1'),
+    createNode('process', { x: 530, y: 495 }, label('Hoàn tất', 'Complete'), 'process-2'),
   ]
 
   return {
@@ -98,14 +103,17 @@ export function createStarterDiagram(): DiagramSnapshot {
     edges: [
       createEdge('start', 'process', 'e-start-process'),
       createEdge('process', 'decision', 'e-process-decision'),
-      { ...createEdge('decision', 'process-1', 'e-decision-process-1'), label: 'Không', sourceHandle: 'left', targetHandle: 'top' },
-      { ...createEdge('decision', 'process-2', 'e-decision-process-2'), label: 'Có', sourceHandle: 'right', targetHandle: 'top' },
+      { ...createEdge('decision', 'process-1', 'e-decision-process-1'), label: label('Không', 'No'), sourceHandle: 'left', targetHandle: 'top' },
+      { ...createEdge('decision', 'process-2', 'e-decision-process-2'), label: label('Có', 'Yes'), sourceHandle: 'right', targetHandle: 'top' },
     ],
   }
 }
 
 export function cleanNodes(source: DiagramNode[]): DiagramNode[] {
-  return source.map(({ selected: _selected, dragging: _dragging, measured: _measured, ...node }) => node)
+  return source.map(({ selected: _selected, dragging: _dragging, measured: _measured, ...node }) => ({
+    ...node,
+    data: cleanNodeData(node.data),
+  }))
 }
 
 export function cloneSnapshot(snapshot: DiagramSnapshot): DiagramSnapshot {
@@ -119,13 +127,27 @@ export function parseDocument(value: unknown): DiagramSnapshot | null {
 
   const nodes = candidate.nodes.filter(isDiagramNode).map((node) => ({
     ...node,
-    data: { ...kindDefaults[node.data.kind], ...(node.data.kind === 'swimlane' ? { swimlane: node.data.swimlane ?? createDefaultSwimlane() } : {}), ...node.data },
+    data: cleanNodeData({ ...kindDefaults[node.data.kind], ...(node.data.kind === 'swimlane' ? { swimlane: node.data.swimlane ?? createDefaultSwimlane() } : {}), ...node.data }),
   }))
   const nodeIds = new Set(nodes.map((node) => node.id))
   if (nodes.some((node) => !hasValidParent(node, nodes, nodeIds))) return null
   const edges = candidate.edges.filter((edge): edge is Edge => isEdge(edge) && nodeIds.has(edge.source) && nodeIds.has(edge.target))
 
   return nodes.length === candidate.nodes.length ? { nodes, edges } : null
+}
+
+function cleanNodeData(data: DiagramNodeData): DiagramNodeData {
+  const {
+    arrowLabels: _legacyLabels,
+    arrowPoints: _legacyPoints,
+    arrowStyle: _legacyStyle,
+    ...cleanData
+  } = data as DiagramNodeData & {
+    arrowLabels?: unknown
+    arrowPoints?: unknown
+    arrowStyle?: unknown
+  }
+  return cleanData
 }
 
 export function containerChildCount(containerId: string, nodes: DiagramNode[]) {
@@ -333,7 +355,7 @@ function absoluteNodePosition(node: DiagramNode, nodes: Map<string, DiagramNode>
   return { x, y }
 }
 
-function nodeDimensions(node: DiagramNode) {
+export function nodeDimensions(node: DiagramNode) {
   const style = node.style as Partial<Record<'width' | 'height', number | string>> | undefined
   const measured = node.measured as Partial<Record<'width' | 'height', number>> | undefined
   return {
@@ -354,7 +376,7 @@ function clamp(value: number, min: number, max: number) {
 }
 
 function createDefaultSwimlane(): SwimlaneData {
-  return { direction: 'horizontal', lanes: ['Lane 1', 'Lane 2', 'Lane 3'] }
+  return { direction: 'horizontal', lanes: ['1', '2', '3'] }
 }
 
 const defaultNodeDimensions: Record<NodeKind, { width: number; height: number }> = {
@@ -382,6 +404,7 @@ function isDiagramNode(value: unknown): value is DiagramNode {
     && !!data
     && typeof data.label === 'string' && data.label.length <= 5000
     && isNodeKind(data.kind)
+    && (data.shapeType === undefined || (typeof data.shapeType === 'string' && data.shapeType.length <= 80))
     && isSafeColor(data.fill)
     && isSafeColor(data.stroke)
     && isSafeColor(data.textColor)

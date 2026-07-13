@@ -1,6 +1,6 @@
 # Third-party notices
 
-99draw is released under MIT. Its dependencies retain their own licenses:
+99 Diagrams is released under GPL-3.0-only. Its dependencies retain their own licenses:
 
 | Dependency | Version at integration | License | Purpose |
 | --- | --- | --- | --- |

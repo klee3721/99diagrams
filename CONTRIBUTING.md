@@ -1,4 +1,4 @@
-# Contributing to 99draw
+# Contributing to 99 Diagrams
 
 Cảm ơn bạn đã muốn đóng góp. Dự án ưu tiên thay đổi nhỏ, có kiểm thử và dễ review.
 
@@ -14,13 +14,13 @@ Cảm ơn bạn đã muốn đóng góp. Dự án ưu tiên thay đổi nhỏ, c
 * Chạy `npm test` và `npm run build` trước khi gửi.
 * Giữ UI có thể dùng bằng bàn phím và không chỉ truyền trạng thái qua màu.
 * Không thêm telemetry, network call hay dependency nặng nếu chưa thảo luận.
-* Mọi thay đổi format `.99draw.json` cần migration, fixture và test round-trip.
+* Mọi thay đổi format `.99diagrams.json` cần migration, fixture và test round-trip.
 * Không đưa logo, stencil hoặc tài sản có giấy phép không rõ ràng vào repo.
 
 ## Giấy phép đóng góp
 
-99draw dùng chính sách inbound-equals-outbound: đóng góp được gửi theo cùng
-giấy phép MIT của dự án. Dự án không yêu cầu CLA riêng và không yêu cầu DCO
+99 Diagrams dùng chính sách inbound-equals-outbound: đóng góp được gửi theo cùng
+giấy phép GPL-3.0-only của dự án. Dự án không yêu cầu CLA riêng và không yêu cầu DCO
 sign-off cho pull request thông thường. Khi gửi PR, bạn xác nhận bạn có quyền
 đóng góp thay đổi đó và không đưa vào tài sản, stencil, template, văn bản hoặc
 dependency có nguồn gốc/giấy phép không rõ ràng.
@@ -31,7 +31,7 @@ Chi tiết quyết định nằm trong
 ## Báo bug
 
 Nêu phiên bản trình duyệt, các bước tái hiện tối thiểu, kỳ vọng, kết quả thực tế
-và file `.99draw.json` đã được ẩn dữ liệu nhạy cảm khi có thể.
+và file `.99diagrams.json` đã được ẩn dữ liệu nhạy cảm khi có thể.
 
 ## Quy tắc ứng xử
 

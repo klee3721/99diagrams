@@ -23,7 +23,7 @@ describe('demo gallery', () => {
         pageName: copy.name,
         createdAt: '2026-07-11T00:00:00.000Z',
         updatedAt: '2026-07-11T00:00:00.000Z',
-        layers: demo.layers,
+        layers: demo.layers?.('en'),
       })
       const serialized = serializeDiagramDocument(document)
       const parsed = parseDiagramDocument(JSON.parse(serialized))

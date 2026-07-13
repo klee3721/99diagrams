@@ -51,7 +51,6 @@ function importedDocument() {
         animated: false,
         reconnectable: true,
         style: { stroke: '#64748b', strokeWidth: 2 },
-        markerEnd: { type: 'arrowclosed', color: '#64748b' },
       }],
     }],
   }
@@ -59,16 +58,16 @@ function importedDocument() {
 
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => {
-    localStorage.setItem('99draw:language', 'en')
+    localStorage.setItem('99diagrams:language', 'en')
   })
 })
 
-test('imports a valid .99draw.json file through the open control', async ({ page }) => {
+test('imports a valid .99diagrams.json file through the open control', async ({ page }) => {
   await page.goto('/')
   await expect(page.getByRole('button', { name: 'Export file' })).toBeVisible()
 
-  await page.locator('input[accept*=".99draw"]').setInputFiles({
-    name: 'imported.99draw.json',
+  await page.locator('input[accept*=".99diagrams"]').setInputFiles({
+    name: 'imported.99diagrams.json',
     mimeType: 'application/json',
     buffer: Buffer.from(JSON.stringify(importedDocument())),
   })
@@ -79,19 +78,18 @@ test('imports a valid .99draw.json file through the open control', async ({ page
   await expect(page.locator('.react-flow__node').getByText('Imported process', { exact: true })).toBeVisible()
 })
 
-test('rejects malformed .99draw.json without replacing the current document', async ({ page }) => {
+test('rejects malformed .99diagrams.json without replacing the current document', async ({ page }) => {
   await page.goto('/')
   await expect(page.locator('.react-flow__node')).toHaveCount(5)
 
-  const dialog = page.waitForEvent('dialog')
-  await page.locator('input[accept*=".99draw"]').setInputFiles({
-    name: 'malformed.99draw.json',
+  await page.locator('input[accept*=".99diagrams"]').setInputFiles({
+    name: 'malformed.99diagrams.json',
     mimeType: 'application/json',
     buffer: Buffer.from('{"version":2,"pages":[]}'),
   })
-  const alert = await dialog
-  expect(alert.message()).toContain('Could not read the file')
-  await alert.accept()
+  const dialog = page.getByRole('dialog', { name: 'Notice' })
+  await expect(dialog).toContainText('Could not read the file')
+  await dialog.getByRole('button', { name: 'OK' }).click()
 
   await expect(page.locator('.react-flow__node')).toHaveCount(5)
   await expect(page.getByText('Imported start')).toHaveCount(0)
@@ -101,16 +99,13 @@ test('rejects files larger than 5 MB without replacing the current document', as
   await page.goto('/')
   await expect(page.locator('.react-flow__node')).toHaveCount(5)
 
-  const filePath = testInfo.outputPath('too-large.99draw.json')
+  const filePath = testInfo.outputPath('too-large.99diagrams.json')
   await writeFile(filePath, Buffer.alloc((5 * 1024 * 1024) + 1, 'x'))
 
-  let message = ''
-  page.once('dialog', async (dialog) => {
-    message = dialog.message()
-    await dialog.accept()
-  })
-  await page.locator('input[accept*=".99draw"]').setInputFiles(filePath)
-  await expect.poll(() => message).toContain('File is too large')
+  await page.locator('input[accept*=".99diagrams"]').setInputFiles(filePath)
+  const dialog = page.getByRole('dialog', { name: 'Notice' })
+  await expect(dialog).toContainText('File is too large')
+  await dialog.getByRole('button', { name: 'OK' }).click()
 
   await expect(page.locator('.react-flow__node')).toHaveCount(5)
   await expect(page.getByText('Imported start')).toHaveCount(0)

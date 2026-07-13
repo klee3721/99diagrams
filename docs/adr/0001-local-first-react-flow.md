@@ -6,7 +6,7 @@ Date: 2026-07-11
 
 ## Context
 
-99draw v1.0 is a community diagram editor for flowcharts and workflows. The
+99 Diagrams v1.0 is a community diagram editor for flowcharts and workflows. The
 release goal is a local-first web app that can be cloned, self-hosted and used
 without an account, backend or telemetry. The project also needs enough model
 discipline to support future collaboration without locking the file format to a
@@ -14,13 +14,13 @@ single canvas library.
 
 ## Decision
 
-99draw keeps this boundary:
+99 Diagrams keeps this boundary:
 
 ```text
 React UI -> document commands -> React Flow adapter -> persistence/import/export
 ```
 
-- `.99draw.json` is the canonical versioned document format.
+- `.99diagrams.json` is the canonical versioned document format.
 - React Flow is the interaction and rendering adapter, not the storage schema.
 - Persistence is local-first through browser storage and validated JSON import.
 - Export output is produced from the internal document model, with SVG as the

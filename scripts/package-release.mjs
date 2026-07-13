@@ -9,7 +9,7 @@ const releaseDir = path.join(root, 'release');
 const packageJson = JSON.parse(readFileSync(path.join(root, 'package.json'), 'utf8'));
 const version = packageJson.version;
 const tagName = `v${version}`;
-const artifactBase = `99draw-${tagName}`;
+const artifactBase = `99-diagrams-${tagName}`;
 const allowDirty = process.argv.includes('--allow-dirty');
 
 function run(command, args) {
@@ -53,15 +53,18 @@ requireFile(releaseNotesFile, 'Release notes');
 
 const releaseSbomText = run('npm', ['sbom', '--sbom-format', 'cyclonedx', '--json']);
 const sbom = JSON.parse(releaseSbomText);
-const sbomName = sbom.metadata?.component?.name;
+const sbomComponent = sbom.metadata?.component;
+const sbomRef = sbomComponent?.['bom-ref'];
+const sbomPurl = sbomComponent?.purl;
 const sbomVersion = sbom.metadata?.component?.version;
-if (sbomName !== packageJson.name || sbomVersion !== version) {
+if (sbomRef !== `${packageJson.name}@${version}` || sbomPurl !== `pkg:npm/${packageJson.name}@${version}` || sbomVersion !== version) {
   throw new Error(
     `SBOM metadata mismatch: expected ${packageJson.name}@${version}, got ${
-      sbomName ?? 'unknown'
-    }@${sbomVersion ?? 'unknown'}`,
+      sbomRef ?? sbomPurl ?? 'unknown'
+    }`,
   );
 }
+sbom.metadata.component.name = packageJson.name;
 
 mkdirSync(releaseDir, { recursive: true });
 

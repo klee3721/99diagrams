@@ -5,7 +5,7 @@ Ngày khảo sát: 2026-07-11. Nguồn mã được đọc: `jgraph/drawio` 30.3
 
 ## Mục tiêu
 
-99draw là một trình biên tập sơ đồ và whiteboard mã nguồn mở, lấy cảm hứng từ
+99 Diagrams là một trình biên tập sơ đồ và whiteboard mã nguồn mở, lấy cảm hứng từ
 độ hoàn thiện của draw.io nhưng có thương hiệu, tài sản, kiến trúc và cộng đồng
 độc lập. Mục tiêu không phải sao chép giao diện hoặc tài sản của draw.io từng
 pixel.
@@ -18,13 +18,13 @@ pixel.
   (`js/grapheditor` và `js/diagramly`), ngoài shape, stencil, template và các
   tích hợp lưu trữ. Đây là sản phẩm nhiều năm, không phải một canvas đơn giản.
 * Upstream phát hành mã nguồn theo Apache-2.0, nhưng bộ icon, stencil và template
-  có điều khoản riêng; không dùng nhãn hiệu hoặc logo draw.io cho 99draw.
-* draw.io upstream nói rõ không nhận pull request. 99draw cần governance và
+  có điều khoản riêng; không dùng nhãn hiệu hoặc logo draw.io cho 99 Diagrams.
+* draw.io upstream nói rõ không nhận pull request. 99 Diagrams cần governance và
   quy trình đóng góp riêng nếu muốn trở thành dự án cộng đồng.
 
 ## Bố cục Classic cần học hỏi
 
-Đây là theme phù hợp làm chuẩn cho 99draw MVP vì nó tối ưu cho tác vụ kỹ thuật
+Đây là theme phù hợp làm chuẩn cho 99 Diagrams MVP vì nó tối ưu cho tác vụ kỹ thuật
 dày đặc thông tin.
 
 ```
@@ -46,7 +46,7 @@ Các thông số visual nổi bật trong stylesheet hiện tại của draw.io:
 | Màu light | panel `#f1f3f4`, canvas `#ececec`, viền `#dadada`, accent xanh |
 | Dialog | padding 24px, section bo góc 8px, nội dung cuộn khi quá viewport |
 
-99draw nên tiếp thu tính rõ ràng, mật độ, tính nhất quán của hệ này nhưng dùng
+99 Diagrams nên tiếp thu tính rõ ràng, mật độ, tính nhất quán của hệ này nhưng dùng
 token màu, icon và thương hiệu riêng. MVP chỉ cần một theme desktop Classic,
 sau đó mới mở rộng Simple, Minimal và Sketch.
 
@@ -58,13 +58,13 @@ sau đó mới mở rộng Simple, Minimal và Sketch.
 | Canvas | pan, zoom, fit, page view, grid, snap, guides, rulers, outline, chọn nhiều, marquee |
 | Đối tượng | rectangle, ellipse, diamond, text, image, container/swimlane, group, table, note |
 | Shape library | palette theo nhóm, tìm kiếm, drag-drop, template, custom library sau MVP |
-| Connector | kéo từ handle, floating/fixed anchor, arrowhead, routing orthogonal/straight/curved, waypoint, label |
+| Connector | kéo từ handle, floating/fixed anchor, endpoint marker, routing orthogonal/straight/curved, waypoint, label |
 | Chỉnh sửa | double-click text, inspector theo selection, style mặc định, copy/paste style, keyboard shortcuts |
 | Arrange | align, distribute, front/back, group, lock, resize, rotate, autosize, duplicate, clipboard |
 | Tổ chức | pages, layers, tags, metadata, link/tooltip, visibility và lock theo layer |
 | Diagrams from text | import Mermaid/CSV trước; SQL, AI và freehand là các giai đoạn sau |
 | Layout | flow/tree/organic/radial; cấu hình spacing, direction và animation |
-| I/O | `.99draw` native, import/export `.drawio` XML, PNG, SVG, PDF; export selection/page/document |
+| I/O | `.99diagrams` native, import/export `.drawio` XML, PNG, SVG, PDF; export selection/page/document |
 | Collaboration | share link, presence/cursor, realtime merge, comments và version history là giai đoạn sau |
 | Extensibility | shape registry, command registry, importer/exporter, plugin API, configuration flags |
 
@@ -123,9 +123,9 @@ transaction: một thao tác kéo nhiều shape chỉ tạo một mục undo.
 
 Định dạng `.drawio` là XML: `mxfile` chứa nhiều `diagram`, mỗi diagram là
 `mxGraphModel`; cell có id, parent, geometry, style, `vertex` hoặc `edge`.
-Nội dung diagram cũng có thể deflate raw + Base64. 99draw nên:
+Nội dung diagram cũng có thể deflate raw + Base64. 99 Diagrams nên:
 
-1. Có native schema JSON versioned (`.99draw`) dễ migrate và validate.
+1. Có native schema JSON versioned (`.99diagrams`) dễ migrate và validate.
 2. Import `.drawio` plain/compressed vào normalized model; giữ thuộc tính chưa
    hiểu trong `extensions.drawio` để round-trip tốt hơn.
 3. Xuất `.drawio` plain XML trước, rồi bổ sung compressed export để tương thích
@@ -134,7 +134,7 @@ Nội dung diagram cũng có thể deflate raw + Base64. 99draw nên:
 
 ## Kiến trúc tham chiếu của draw.io
 
-| Lớp upstream | Bài học cho 99draw |
+| Lớp upstream | Bài học cho 99 Diagrams |
 | --- | --- |
 | `mxGraphModel` / `mxCell` | model cây, geometry và changes nguyên tử |
 | `mxGraph` / `Graph` | kết hợp model, renderer, selection, interaction và stylesheet |

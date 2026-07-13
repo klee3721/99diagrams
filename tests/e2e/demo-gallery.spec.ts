@@ -27,6 +27,12 @@ async function runCommand(page: Page, query: string) {
   await page.keyboard.press('Enter')
 }
 
+async function clickToolbarMenuItem(page: Page, menu: string, item: string) {
+  const escapedItem = item.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  await page.getByRole('button', { name: `${menu} ▾` }).click()
+  await page.getByRole('menu').getByRole('menuitem', { name: new RegExp(`${escapedItem}$`) }).click()
+}
+
 async function exportDocument(page: Page): Promise<ExportedDocument> {
   const download = page.waitForEvent('download')
   await page.getByRole('button', { name: 'Export file' }).click()
@@ -39,8 +45,8 @@ async function exportDocument(page: Page): Promise<ExportedDocument> {
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => {
     localStorage.clear()
-    localStorage.setItem('99draw:language', 'en')
-    localStorage.setItem('99draw:theme', 'light')
+    localStorage.setItem('99diagrams:language', 'en')
+    localStorage.setItem('99diagrams:theme', 'light')
   })
 })
 
@@ -49,11 +55,11 @@ for (const demo of demos) {
     await page.goto('/')
     await expect(page.getByRole('button', { name: 'Export file' })).toBeVisible()
 
-    await page.getByRole('button', { name: 'Demos' }).click()
+    await clickToolbarMenuItem(page, 'Insert', 'Demos')
     await expect(page.getByRole('dialog', { name: 'Demo gallery' })).toBeVisible()
 
-    page.once('dialog', (dialog) => dialog.accept())
     await page.getByRole('button', { name: new RegExp(demo.name) }).click()
+    await page.getByRole('dialog', { name: 'Confirm action' }).getByRole('button', { name: 'Confirm' }).click()
 
     await expect(page.locator('.document-title')).toContainText(demo.name)
     await expect(page.locator('.react-flow__node')).toHaveCount(demo.nodes)

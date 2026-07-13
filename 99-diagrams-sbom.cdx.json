@@ -2,10 +2,10 @@
   "$schema": "http://cyclonedx.org/schema/bom-1.5.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.5",
-  "serialNumber": "urn:uuid:ed329fa5-e56b-4af7-b909-2ed2a7d6e820",
+  "serialNumber": "urn:uuid:254804f3-f75e-460e-8238-1a7e333cb88b",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-07-12T01:56:36.836Z",
+    "timestamp": "2026-07-13T08:39:44.144Z",
     "lifecycles": [
       {
         "phase": "build"
@@ -19,23 +19,36 @@
       }
     ],
     "component": {
-      "bom-ref": "99draw@1.0.0",
+      "bom-ref": "99-diagrams@1.0.0",
       "type": "library",
-      "name": "99draw",
+      "name": "99-diagrams",
       "version": "1.0.0",
       "scope": "required",
-      "purl": "pkg:npm/99draw@1.0.0",
+      "purl": "pkg:npm/99-diagrams@1.0.0",
       "properties": [
         {
           "name": "cdx:npm:package:private",
           "value": "true"
         }
       ],
-      "externalReferences": [],
+      "externalReferences": [
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/klee3721/99-diagrams.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/klee3721/99-diagrams#readme"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/klee3721/99-diagrams/issues"
+        }
+      ],
       "licenses": [
         {
           "license": {
-            "id": "MIT"
+            "id": "GPL-3.0-only"
           }
         }
       ]
@@ -22272,7 +22285,7 @@
   ],
   "dependencies": [
     {
-      "ref": "99draw@1.0.0",
+      "ref": "99-diagrams@1.0.0",
       "dependsOn": [
         "@xyflow/react@12.11.2",
         "elkjs@0.11.1",

@@ -9,6 +9,14 @@ describe('diagram model', () => {
     expect(document.nodes).toHaveLength(5)
     expect(document.edges).toHaveLength(4)
     expect(document.edges.every((edge) => ids.has(edge.source) && ids.has(edge.target))).toBe(true)
+    expect(document.nodes.map((node) => node.data.label)).toContain('Start')
+  })
+
+  it('localizes the starter flow when requested', () => {
+    const document = createStarterDiagram('vi')
+
+    expect(document.nodes.map((node) => node.data.label)).toContain('Bắt đầu')
+    expect(document.edges.map((edge) => edge.label)).toContain('Có')
   })
 
   it('strips transient React Flow state before persisting', () => {
@@ -64,7 +72,7 @@ describe('diagram model', () => {
     const source = createNode('process', { x: 0, y: 0 }, 'A', 'a')
     const target = createNode('process', { x: 140, y: 0 }, 'B', 'b')
     const edges = [
-      { ...createEdge('a', 'b', 'edge-straight'), type: 'straight', label: 'Có', style: { stroke: '#0ea5e9', strokeWidth: 3, strokeDasharray: '6 4' }, markerStart: { type: 'arrow', color: '#0ea5e9' }, animated: true },
+      { ...createEdge('a', 'b', 'edge-straight'), type: 'straight', label: 'Có', style: { stroke: '#0ea5e9', strokeWidth: 3, strokeDasharray: '6 4' }, animated: true },
       { ...createEdge('a', 'b', 'edge-curved'), type: 'default', markerEnd: undefined, style: { stroke: '#64748b', strokeWidth: 2, strokeDasharray: '2 3' } },
       createEdge('a', 'missing', 'edge-dangling'),
     ]
@@ -73,6 +81,8 @@ describe('diagram model', () => {
 
     expect(parsed?.edges).toHaveLength(2)
     expect(parsed?.edges[0]).toMatchObject({ id: 'edge-straight', type: 'straight', label: 'Có', animated: true })
+    expect(parsed?.edges[0].markerStart).toBeUndefined()
+    expect(parsed?.edges[0].markerEnd).toMatchObject({ type: 'arrowclosed', color: '#64748b' })
     expect(parsed?.edges[1]).toMatchObject({ id: 'edge-curved', type: 'default' })
   })
 

@@ -1,8 +1,8 @@
 # CSV import
 
-99draw can create an editable diagram from a small CSV table. This is useful
+99 Diagrams can create an editable diagram from a small CSV table. This is useful
 for turning spreadsheet rows, issue lists or lightweight process inventories
-into a flowchart without writing the internal `.99draw.json` format by hand.
+into a flowchart without writing the internal `.99diagrams.json` format by hand.
 
 Open the command palette and run `Import CSV diagram`, then paste a CSV table
 with a header row.
@@ -27,7 +27,7 @@ Optional columns:
   fall back to `process`.
 * `next`, `to`, `target` or `targets`: target ids connected from this row. Use
   `;` or `|` to list multiple targets.
-* `x` and `y`: canvas coordinates. If omitted, 99draw places shapes on a simple
+* `x` and `y`: canvas coordinates. If omitted, 99 Diagrams places shapes on a simple
   grid.
 
 The importer supports quoted cells, including labels with commas. Duplicate ids

@@ -46,9 +46,9 @@ const packageLock = readJson('package-lock.json')
 const license = readText('LICENSE')
 const notices = readText('THIRD_PARTY_NOTICES.md')
 
-if (packageJson.license !== 'MIT') failures.push(`package.json license must be MIT, received ${String(packageJson.license)}`)
-if (!license.startsWith('MIT License')) failures.push('LICENSE must contain the MIT License text')
-if (!notices.includes('99draw is released under MIT')) failures.push('THIRD_PARTY_NOTICES.md must state the project license')
+if (packageJson.license !== 'GPL-3.0-only') failures.push(`package.json license must be GPL-3.0-only, received ${String(packageJson.license)}`)
+if (!license.includes('GNU GENERAL PUBLIC LICENSE')) failures.push('LICENSE must contain the GNU GPLv3 license text')
+if (!notices.includes('99 Diagrams is released under GPL-3.0-only')) failures.push('THIRD_PARTY_NOTICES.md must state the project license')
 
 const runtimeDeps = Object.keys(packageJson.dependencies ?? {})
 for (const dependency of runtimeDeps) {

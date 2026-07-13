@@ -1,12 +1,12 @@
-# Plan hoàn thiện 99draw v1.0
+# Plan hoàn thiện 99 Diagrams v1.0
 
-Tài liệu này là bản kế hoạch hành động cuối cùng để đưa 99draw từ release
+Tài liệu này là bản kế hoạch hành động cuối cùng để đưa 99 Diagrams từ release
 candidate hiện tại thành một bản v1.0 đủ tin cậy cho cộng đồng dùng, tự host và
 đóng góp.
 
 ## Mục tiêu bản hoàn chỉnh
 
-99draw v1.0 là trình vẽ flowchart/workflow mã nguồn mở, local-first, chạy được
+99 Diagrams v1.0 là trình vẽ flowchart/workflow mã nguồn mở, local-first, chạy được
 như static web app/PWA, không cần tài khoản và không gửi nội dung sơ đồ ra mạng
 mặc định.
 
@@ -65,7 +65,7 @@ Docker self-host smoke.
 Cập nhật release package 12/07/2026: package metadata và lockfile đã nâng lên
 `1.0.0`, badge trong app hiển thị `v1.0`, changelog/release notes/checklist đã
 chốt cho ngày release, `docs/performance.md` đã cập nhật baseline mới nhất và
-SBOM CycloneDX đã được sinh lại cho `99draw@1.0.0` với 536 components.
+SBOM CycloneDX đã được sinh lại cho `99-diagrams@1.0.0` với 536 components.
 
 Cập nhật GitHub release automation 12/07/2026: đã thêm release workflow cho
 tag `v*` để build, smoke, package artifact và upload bundle `release/`; đồng
@@ -139,7 +139,7 @@ Chạy:
 npm ci
 npm run rc:local
 npm run benchmark:browser
-npm run --silent sbom > 99draw-sbom.cdx.json
+npm run --silent sbom > 99-diagrams-sbom.cdx.json
 ```
 
 Nếu lỗi:
@@ -257,7 +257,7 @@ rollback path.
 ```bash
 npm ci
 npm run rc:full
-npm run --silent sbom > 99draw-sbom.cdx.json
+npm run --silent sbom > 99-diagrams-sbom.cdx.json
 npm run package:release
 ```
 

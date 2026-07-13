@@ -79,7 +79,7 @@ function createPdfFromPng(pngBuffer: Buffer, size: { width: number; height: numb
 }
 
 function renderPdfToPng(pdfBuffer: Buffer) {
-  const dir = mkdtempSync(join(tmpdir(), '99draw-pdf-render-'))
+  const dir = mkdtempSync(join(tmpdir(), '99diagrams-pdf-render-'))
   const pdfPath = join(dir, 'fixture.pdf')
   const outputPrefix = join(dir, 'rendered')
 

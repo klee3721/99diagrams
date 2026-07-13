@@ -11,7 +11,7 @@ test('does not make external network requests on default load', async ({ page })
   })
 
   await page.goto('/')
-  await expect(page.getByRole('button', { name: /Xuất file|Export file/ })).toBeVisible()
+  await expect(page.getByRole('button', { name: /Xuất tệp|Export file/ })).toBeVisible()
   await page.waitForTimeout(500)
 
   const appOrigin = new URL(page.url()).origin

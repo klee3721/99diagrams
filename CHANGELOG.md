@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to 99draw will be documented in this file.
+All notable changes to 99 Diagrams will be documented in this file.
 
 The project follows semantic versioning after the first stable `v1.0.0`
 release. Dates use `YYYY-MM-DD`.
@@ -18,7 +18,7 @@ release. Dates use `YYYY-MM-DD`.
   import and ELK auto-layout in a Web Worker.
 - Outline navigation for visible shapes and connectors, with click-to-select and
   fit-to-canvas behavior.
-- Export to `.99draw.json`, SVG, PNG and PDF; SVG/PNG/PDF output now shares the
+- Export to `.99diagrams.json`, SVG, PNG and PDF; SVG/PNG/PDF output now shares the
   deterministic SVG model exporter.
 - Việt/Anh language toggle, dark/high-contrast themes and PWA/offline shell.
 - Static and Docker self-hosting support with Nginx CSP, SPA fallback and cache

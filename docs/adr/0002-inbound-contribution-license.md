@@ -6,19 +6,19 @@ Date: 2026-07-12
 
 ## Context
 
-99draw is intended to be a small community-maintained open-source project. The
-release package already ships with an MIT license, third-party notices,
+99 Diagrams is intended to be a small community-maintained open-source project. The
+release package already ships with a GPL-3.0-only license, third-party notices,
 contribution docs, issue templates and a code of conduct. Before v1.0, the repo
 also needs a clear decision about whether contributors must sign a CLA, use DCO
 sign-offs or follow an inbound-equals-outbound policy.
 
 ## Decision
 
-99draw uses an inbound-equals-outbound policy:
+99 Diagrams uses an inbound-equals-outbound policy:
 
-- Contributions are accepted under the same MIT license as the project.
-- 99draw does not require a separate Contributor License Agreement.
-- 99draw does not require Developer Certificate of Origin sign-off lines for
+- Contributions are accepted under the same GPL-3.0-only license as the project.
+- 99 Diagrams does not require a separate Contributor License Agreement.
+- 99 Diagrams does not require Developer Certificate of Origin sign-off lines for
   ordinary pull requests.
 - Contributors must confirm in the pull request checklist that they have the
   right to contribute their changes and that no unclear third-party assets,
@@ -41,13 +41,13 @@ sign-offs or follow an inbound-equals-outbound policy.
   than the v1.0 community size justifies.
 - Require DCO sign-off lines on every commit. This is common for some projects,
   but it complicates casual contributions and is not necessary for the current
-  MIT inbound policy.
+  GPL inbound policy.
 - Leave the policy unstated. This would keep contribution docs short, but it
   would make the v1.0 release package incomplete and ambiguous.
 
 ## Release guardrails
 
-- `CONTRIBUTING.md` must describe the inbound MIT policy.
+- `CONTRIBUTING.md` must describe the inbound GPL-3.0-only policy.
 - The pull request template must ask contributors to confirm rights and asset
   provenance.
 - `THIRD_PARTY_NOTICES.md` must include runtime dependencies used by the app.

@@ -1,6 +1,6 @@
 # Demo gallery
 
-The in-app demo gallery contains original 99draw diagrams for trying real
+The in-app demo gallery contains original 99 Diagrams diagrams for trying real
 editing workflows. These are not copied from draw.io and do not use external
 stencils or brand assets.
 

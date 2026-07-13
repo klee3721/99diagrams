@@ -27,8 +27,8 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       manifest: {
-        name: '99draw',
-        short_name: '99draw',
+        name: '99 Diagrams',
+        short_name: '99 Diagrams',
         description: 'Local-first open source flowchart editor',
         theme_color: '#111827',
         background_color: '#e9edf4',

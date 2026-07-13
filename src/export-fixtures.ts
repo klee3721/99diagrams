@@ -54,7 +54,7 @@ function styledEdges(id: string): DiagramSnapshot {
   return {
     nodes,
     edges: [
-      { ...createEdge(nodes[0].id, nodes[1].id, `${id}-straight`), type: 'straight', label: 'straight', style: { stroke: '#0ea5e9', strokeWidth: 3, strokeDasharray: '6 4' }, markerStart: { type: 'arrow', color: '#0ea5e9' }, animated: true },
+      { ...createEdge(nodes[0].id, nodes[1].id, `${id}-straight`), type: 'straight', label: 'straight', style: { stroke: '#0ea5e9', strokeWidth: 3, strokeDasharray: '6 4' }, animated: true },
       { ...createEdge(nodes[1].id, nodes[2].id, `${id}-curved`), type: 'default', label: 'curved', style: { stroke: '#7c3aed', strokeWidth: 2, strokeDasharray: '2 3' }, markerEnd: undefined },
     ],
   }
@@ -101,7 +101,7 @@ function architecture(id: string): ExportFixture {
 function imageFixture(id: string): DiagramSnapshot {
   const image = node(`${id}-image`, 'image', 'Embedded logo', 120, 80)
   image.data.imageDataUrl = 'data:image/png;base64,iVBORw0KGgo='
-  return { nodes: [image, node(`${id}-note`, 'note', 'Logo is embedded in the .99draw file', 380, 100)], edges: [createEdge(image.id, `${id}-note`, `${id}-edge`)] }
+  return { nodes: [image, node(`${id}-note`, 'note', 'Logo is embedded in the .99diagrams file', 380, 100)], edges: [createEdge(image.id, `${id}-note`, `${id}-edge`)] }
 }
 
 export const exportFixtures: ExportFixture[] = [

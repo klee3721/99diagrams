@@ -35,8 +35,8 @@ Ask every participant to complete these tasks without help after the app loads:
 5. Use undo and redo.
 6. Reload the browser and confirm the diagram is preserved.
 7. Switch theme or language once.
-8. Export `.99draw.json` and one visual format: SVG, PNG or PDF.
-9. Reopen the exported `.99draw.json`.
+8. Export `.99diagrams.json` and one visual format: SVG, PNG or PDF.
+9. Reopen the exported `.99diagrams.json`.
 
 ## Automated pre-beta smoke
 
@@ -48,8 +48,8 @@ runbook for the four shipped demos in Chromium:
 - edit one node label and one connector label;
 - use undo and redo;
 - reload and confirm the edited document is preserved;
-- export `.99draw.json` and a representative visual format;
-- reopen the exported `.99draw.json`;
+- export `.99diagrams.json` and a representative visual format;
+- reopen the exported `.99diagrams.json`;
 - switch theme and language.
 
 This automated smoke does not replace human beta feedback. It cannot judge

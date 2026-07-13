@@ -1,6 +1,6 @@
 import { execFileSync } from 'node:child_process'
 
-const tag = `99draw:smoke-${Date.now()}`
+const tag = `99diagrams:smoke-${Date.now()}`
 let containerId = ''
 
 function run(command, args, options = {}) {
@@ -47,7 +47,7 @@ async function main() {
 
   const manifest = await waitFor(`http://127.0.0.1:${port}/manifest.webmanifest`, 'manifest')
   const manifestText = await manifest.text()
-  if (!manifestText.includes('99draw')) throw new Error('Manifest did not include 99draw metadata')
+  if (!manifestText.includes('99 Diagrams')) throw new Error('Manifest did not include 99 Diagrams metadata')
 
   console.log(`Docker smoke passed on http://127.0.0.1:${port}`)
 }

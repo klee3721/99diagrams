@@ -12,4 +12,4 @@ Static self-host mặc định nên dùng CSP tương đương `nginx.conf`: `co
 giới hạn ở `'self'`, `object-src 'none'`, `frame-ancestors 'none'`, và chỉ cho
 ảnh `self`, `data:` hoặc `blob:`. Xem [docs/self-host.md](docs/self-host.md).
 
-99draw đang ở trạng thái beta; chỉ nhánh `main` được hỗ trợ.
+99 Diagrams đang ở trạng thái beta; chỉ nhánh `main` được hỗ trợ.

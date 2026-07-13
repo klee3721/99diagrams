@@ -1,6 +1,6 @@
 # Code of Conduct
 
-99draw cam kết tạo môi trường cởi mở và tôn trọng cho mọi người, bất kể kinh
+99 Diagrams cam kết tạo môi trường cởi mở và tôn trọng cho mọi người, bất kể kinh
 nghiệm, bản dạng, nguồn gốc hay quan điểm.
 
 Hãy trao đổi thiện chí, phản biện ý tưởng thay vì con người, chấp nhận phản hồi

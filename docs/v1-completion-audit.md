@@ -1,4 +1,4 @@
-# 99draw v1.0 completion audit
+# 99 Diagrams v1.0 completion audit
 
 Last updated: 2026-07-12.
 
@@ -7,8 +7,8 @@ avoid calling the project complete merely because the UI looks finished.
 
 ## Release state
 
-- Public repository: <https://github.com/klee3721/99draw>
-- Public release: <https://github.com/klee3721/99draw/releases/tag/v1.0.0>
+- Public repository: <https://github.com/klee3721/99-diagrams>
+- Public release: <https://github.com/klee3721/99-diagrams/releases/tag/v1.0.0>
 - Published commit: `78c4553`
 - GitHub CI: run `29182499082`, success on `78c4553`
 - GitHub Release package: run `29182500050`, success on `78c4553`
@@ -39,7 +39,7 @@ of `docs/beta-feedback.md`, but real-user beta feedback is still needed to
 judge layout clarity, task comprehension and subjective UX blockers.
 
 Current public tracker state checked on 2026-07-12: no open GitHub issues were
-returned by `gh issue list --repo klee3721/99draw --state open`, and
+returned by `gh issue list --repo klee3721/99-diagrams --state open`, and
 `npm run check:release-blockers` can be used before any patch release.
 
 If a human beta report confirms a blocker, data-loss bug or broken export, the

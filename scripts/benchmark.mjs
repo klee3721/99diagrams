@@ -60,7 +60,7 @@ function measure(label, fn) {
   return { label, duration, result }
 }
 
-console.log('99draw model benchmark')
+console.log('99 Diagrams model benchmark')
 console.log('size,create_ms,serialize_ms,scope_20_ms,layout_graph_ms,json_kb')
 
 for (const size of sizes) {

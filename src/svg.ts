@@ -16,6 +16,8 @@ type Box = { x: number; y: number; width: number; height: number }
 
 type AnchoredNode = DiagramNode & { absolutePosition: { x: number; y: number }; box: Box }
 
+const endpointMarkerGap = 7
+
 const defaultNodeSize: Record<NodeKind, { width: number; height: number }> = {
   start: { width: 164, height: 64 },
   process: { width: 164, height: 64 },
@@ -234,8 +236,8 @@ function measureGraph(nodes: AnchoredNode[], edges: Edge[], nodeMap: Map<string,
     const source = nodeMap.get(edge.source)
     const target = nodeMap.get(edge.target)
     if (!source || !target) continue
-    const a = anchorPoint(source, edge.sourceHandle, 'source')
-    const b = anchorPoint(target, edge.targetHandle, 'target')
+    const a = edge.markerStart ? offsetAnchorPoint(anchorPoint(source, edge.sourceHandle, 'source'), edge.sourceHandle, 'source', endpointMarkerGap) : anchorPoint(source, edge.sourceHandle, 'source')
+    const b = edge.markerEnd ? offsetAnchorPoint(anchorPoint(target, edge.targetHandle, 'target'), edge.targetHandle, 'target', endpointMarkerGap) : anchorPoint(target, edge.targetHandle, 'target')
     boxes.push({ x: Math.min(a.x, b.x), y: Math.min(a.y, b.y), width: Math.abs(a.x - b.x), height: Math.abs(a.y - b.y) })
   }
 
@@ -280,8 +282,10 @@ function renderEdge(edge: Edge, nodeMap: Map<string, AnchoredNode>) {
   const target = nodeMap.get(edge.target)
   if (!source || !target) return ''
 
-  const start = anchorPoint(source, edge.sourceHandle, 'source')
-  const end = anchorPoint(target, edge.targetHandle, 'target')
+  const rawStart = anchorPoint(source, edge.sourceHandle, 'source')
+  const rawEnd = anchorPoint(target, edge.targetHandle, 'target')
+  const start = edge.markerStart ? offsetAnchorPoint(rawStart, edge.sourceHandle, 'source', endpointMarkerGap) : rawStart
+  const end = edge.markerEnd ? offsetAnchorPoint(rawEnd, edge.targetHandle, 'target', endpointMarkerGap) : rawEnd
   const style = edgeStyle(edge)
   const path = edge.type === 'straight' ? straightPath(start, end) : smoothStepPath(start, end)
   const dash = style.strokeDasharray ? ` stroke-dasharray="${escapeXml(String(style.strokeDasharray))}"` : ''
@@ -317,7 +321,6 @@ function renderNode(node: AnchoredNode) {
 
 function renderNodeShape(node: AnchoredNode, fill: string, stroke: string, textColor: string, label: string) {
   const { width, height } = node.box
-
   switch (node.data.kind) {
     case 'start':
       return `<rect x="0" y="0" width="${round(width)}" height="${round(height)}" rx="${round(height / 2)}" fill="${fill}" stroke="${stroke}" stroke-width="2"/>${centerLabel(label, width, height, textColor)}`
@@ -354,8 +357,8 @@ function renderGroupNode(node: AnchoredNode, fill: string, stroke: string, textC
 
 function renderSwimlaneNode(node: AnchoredNode, fill: string, stroke: string, textColor: string, label: string) {
   const { width, height } = node.box
-  const swimlane = node.data.swimlane ?? { direction: 'horizontal', lanes: ['Lane 1'] }
-  const lanes = swimlane.lanes.length ? swimlane.lanes : ['Lane 1']
+  const swimlane = node.data.swimlane ?? { direction: 'horizontal', lanes: ['1'] }
+  const lanes = swimlane.lanes.length ? swimlane.lanes : ['1']
   const base = `<rect x="0" y="0" width="${round(width)}" height="${round(height)}" rx="8" fill="${fill}" stroke="${stroke}" stroke-width="2"/>`
   return swimlane.direction === 'vertical'
     ? base + renderVerticalLanes(label, lanes, width, height, fill, stroke, textColor)
@@ -427,6 +430,14 @@ function anchorPoint(node: AnchoredNode, handle: string | null | undefined, dire
   if (resolved === 'right') return { x: x + width, y: y + height / 2 }
   if (resolved === 'bottom') return { x: x + width / 2, y: y + height }
   return { x: x + width / 2, y }
+}
+
+function offsetAnchorPoint(point: { x: number; y: number }, handle: string | null | undefined, direction: 'source' | 'target', gap: number) {
+  const resolved = handle ?? (direction === 'source' ? 'bottom' : 'top')
+  if (resolved === 'left') return { x: point.x - gap, y: point.y }
+  if (resolved === 'right') return { x: point.x + gap, y: point.y }
+  if (resolved === 'bottom') return { x: point.x, y: point.y + gap }
+  return { x: point.x, y: point.y - gap }
 }
 
 function straightPath(start: { x: number; y: number }, end: { x: number; y: number }) {

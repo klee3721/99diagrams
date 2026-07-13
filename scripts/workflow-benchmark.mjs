@@ -25,7 +25,7 @@ try {
   await waitForServer(origin)
   const browser = await chromium.launch()
   try {
-    console.log('99draw workflow benchmark')
+    console.log('99 Diagrams workflow benchmark')
     console.log('size,json_kb,import_ms,layout_down_ms,dom_nodes,dom_edges')
     for (const size of workflowSizes) {
       const result = await benchmarkWorkflow(browser, size)
@@ -66,14 +66,14 @@ async function benchmarkWorkflow(browser, size) {
 
   try {
     await page.addInitScript(() => {
-      localStorage.setItem('99draw:language', 'en')
-      localStorage.removeItem('99draw:active-document')
-      localStorage.removeItem('99draw:document:v1')
+      localStorage.setItem('99diagrams:language', 'en')
+      localStorage.removeItem('99diagrams:active-document')
+      localStorage.removeItem('99diagrams:document:v1')
     })
     await page.goto(origin, { waitUntil: 'domcontentloaded' })
     await page.waitForSelector('.app-shell')
 
-    const importMs = await importDocument(page, serialized, `workflow-${size}.99draw.json`, size)
+    const importMs = await importDocument(page, serialized, `workflow-${size}.99diagrams.json`, size)
     const layoutMs = await measureLayout(page, size)
     const counts = await readCounts(page)
 
@@ -96,13 +96,13 @@ async function benchmarkExports(browser, size) {
 
   try {
     await page.addInitScript(() => {
-      localStorage.setItem('99draw:language', 'en')
-      localStorage.removeItem('99draw:active-document')
-      localStorage.removeItem('99draw:document:v1')
+      localStorage.setItem('99diagrams:language', 'en')
+      localStorage.removeItem('99diagrams:active-document')
+      localStorage.removeItem('99diagrams:document:v1')
     })
     await page.goto(origin, { waitUntil: 'domcontentloaded' })
     await page.waitForSelector('.app-shell')
-    await importDocument(page, serialized, `export-${size}.99draw.json`, size)
+    await importDocument(page, serialized, `export-${size}.99diagrams.json`, size)
     await measureLayout(page, size)
 
     return {
@@ -126,13 +126,13 @@ async function createContext(browser) {
 
 async function importDocument(page, serialized, fileName, expectedNodes) {
   await page.evaluate(() => {
-    localStorage.setItem('99draw:language', 'en')
-    localStorage.removeItem('99draw:active-document')
-    localStorage.removeItem('99draw:document:v1')
+    localStorage.setItem('99diagrams:language', 'en')
+    localStorage.removeItem('99diagrams:active-document')
+    localStorage.removeItem('99diagrams:document:v1')
   })
 
   const start = performance.now()
-  await page.locator('input[accept*=".99draw"]').setInputFiles({
+  await page.locator('input[accept*=".99diagrams"]').setInputFiles({
     name: fileName,
     mimeType: 'application/json',
     buffer: Buffer.from(serialized),

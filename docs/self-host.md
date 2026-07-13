@@ -1,6 +1,6 @@
-# Self-host 99draw
+# Self-host 99 Diagrams
 
-99draw is a static Vite/PWA build. It does not require a backend for the v1
+99 Diagrams is a static Vite/PWA build. It does not require a backend for the v1
 local-first editor.
 
 ## Static files
@@ -17,8 +17,8 @@ fallback to `index.html`.
 ## Docker
 
 ```bash
-docker build -t 99draw:local .
-docker run --rm -p 8080:8080 99draw:local
+docker build -t 99diagrams:local .
+docker run --rm -p 8080:8080 99diagrams:local
 ```
 
 Open `http://127.0.0.1:8080/`.

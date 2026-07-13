@@ -1,15 +1,15 @@
-# 99draw v1.0.0 release notes
+# 99 Diagrams v1.0.0 release notes
 
-These notes are the release-note source for the first stable 99draw release.
+These notes are the release-note source for the first stable 99 Diagrams release.
 The public GitHub release is published at
-<https://github.com/klee3721/99draw/releases/tag/v1.0.0>.
+<https://github.com/klee3721/99-diagrams/releases/tag/v1.0.0>.
 
 ## Summary
 
-99draw v1.0.0 is a local-first, open-source flowchart and workflow editor for
+99 Diagrams v1.0.0 is a local-first, open-source flowchart and workflow editor for
 the browser. It focuses on a practical diagramming core instead of trying to
 clone draw.io: editable nodes and connectors, pages and layers, local autosave,
-validated `.99draw.json` import/export, SVG/PNG/PDF export, PWA support and
+validated `.99diagrams.json` import/export, SVG/PNG/PDF export, PWA support and
 static/Docker self-hosting.
 
 ## Highlights
@@ -27,7 +27,7 @@ static/Docker self-hosting.
 - ELK auto-layout through a Web Worker with deterministic grid fallback for
   very large graphs.
 - Export full documents, the current page or the current selection to
-  `.99draw.json`; export visual diagrams to SVG, PNG and PDF.
+  `.99diagrams.json`; export visual diagrams to SVG, PNG and PDF.
 - Vietnamese/English UI, light/dark/high-contrast themes, keyboard workflows
   and small-screen read-only fallback.
 - PWA shell, static hosting docs, Docker smoke script, SBOM generation and OSS
@@ -63,7 +63,7 @@ Release-candidate evidence from 2026-07-12:
   for all four shipped demos.
 - Lighthouse accessibility score was 100.
 - `npm audit --audit-level=high` reported 0 vulnerabilities.
-- The release SBOM was regenerated as `99draw@1.0.0` with 536 components.
+- The release SBOM was regenerated as `99-diagrams@1.0.0` with 536 components.
 - SBOM validity and OSS package readiness checks passed.
 
 ## Known limitations
@@ -96,7 +96,7 @@ The GitHub release contains these artifacts:
 - CycloneDX SBOM generated with:
 
 ```bash
-npm run --silent sbom > 99draw-sbom.cdx.json
+npm run --silent sbom > 99-diagrams-sbom.cdx.json
 ```
 
 The release package can be reassembled with:
@@ -112,8 +112,8 @@ GitHub Actions.
 
 ## Rollback
 
-99draw v1.0.0 is static. To roll back, redeploy the previous `dist/` artifact or
-Docker image. Avoid changing the `.99draw.json` schema without a migration; if a
+99 Diagrams v1.0.0 is static. To roll back, redeploy the previous `dist/` artifact or
+Docker image. Avoid changing the `.99diagrams.json` schema without a migration; if a
 schema migration ships, document whether users should export diagrams before
 downgrading.
 

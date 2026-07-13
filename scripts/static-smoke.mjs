@@ -36,8 +36,8 @@ async function verifyHttpSurface() {
 
   const manifest = await readOk(`${origin}/manifest.webmanifest`, 'web manifest')
   const manifestJson = JSON.parse(manifest.text)
-  if (manifestJson.name !== '99draw' || manifestJson.display !== 'standalone') {
-    throw new Error('Manifest did not include expected 99draw PWA metadata')
+  if (manifestJson.name !== '99 Diagrams' || manifestJson.display !== 'standalone') {
+    throw new Error('Manifest did not include expected 99 Diagrams PWA metadata')
   }
 
   const serviceWorker = await readOk(`${origin}/sw.js`, 'service worker')
@@ -64,8 +64,8 @@ async function verifyBrowserApp() {
 
     await page.addInitScript(() => {
       localStorage.clear()
-      localStorage.setItem('99draw:language', 'en')
-      localStorage.setItem('99draw:theme', 'light')
+      localStorage.setItem('99diagrams:language', 'en')
+      localStorage.setItem('99diagrams:theme', 'light')
     })
     await page.goto(origin, { waitUntil: 'networkidle', timeout: uiTimeout })
     await page.getByRole('button', { name: 'Export file' }).waitFor({ timeout: uiTimeout })
@@ -73,7 +73,7 @@ async function verifyBrowserApp() {
     await runCommand(page, 'Add Process')
     await page.waitForFunction(() => document.querySelectorAll('.react-flow__node').length >= 6, undefined, { timeout: uiTimeout })
     await page.waitForFunction(() => {
-      const draft = localStorage.getItem('99draw:document:v1')
+      const draft = localStorage.getItem('99diagrams:document:v1')
       if (!draft) return false
       try {
         return (JSON.parse(draft).nodes?.length ?? 0) >= 6
@@ -110,7 +110,7 @@ async function waitForIndexedDatabase(page) {
     const hasDatabase = await page.evaluate(async () => {
       const timeout = new Promise((resolve) => setTimeout(() => resolve(false), 1_000))
       const lookup = new Promise((resolve) => {
-        const open = indexedDB.open('99draw', 1)
+        const open = indexedDB.open('99diagrams', 1)
         open.onerror = () => resolve(false)
         open.onblocked = () => resolve(false)
         open.onsuccess = () => {

@@ -1,8 +1,8 @@
 {
-  "name": "99draw",
+  "name": "99-diagrams",
   "private": true,
   "version": "1.0.0",
-  "license": "MIT",
+  "license": "GPL-3.0-only",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -30,12 +30,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/klee3721/99draw.git"
+    "url": "git+https://github.com/klee3721/99-diagrams.git"
   },
   "bugs": {
-    "url": "https://github.com/klee3721/99draw/issues"
+    "url": "https://github.com/klee3721/99-diagrams/issues"
   },
-  "homepage": "https://github.com/klee3721/99draw#readme",
+  "homepage": "https://github.com/klee3721/99-diagrams#readme",
   "dependencies": {
     "@xyflow/react": "^12.9.2",
     "elkjs": "^0.11.1",

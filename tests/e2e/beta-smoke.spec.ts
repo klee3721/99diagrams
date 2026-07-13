@@ -32,17 +32,27 @@ async function runCommand(page: Page, query: string) {
   await expect(search).toBeHidden()
 }
 
+async function clickToolbarMenuItem(page: Page, menu: string, item: string) {
+  const escapedItem = item.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  await page.getByRole('button', { name: `${menu} ▾` }).click()
+  await page.getByRole('menu').getByRole('menuitem', { name: new RegExp(`${escapedItem}$`) }).click()
+}
+
 async function openDemo(page: Page, name: string) {
-  await page.getByRole('button', { name: 'Demos' }).click()
+  await clickToolbarMenuItem(page, 'Insert', 'Demos')
   await expect(page.getByRole('dialog', { name: 'Demo gallery' })).toBeVisible()
-  page.once('dialog', (dialog) => dialog.accept())
   await page.getByRole('button', { name: new RegExp(name) }).click()
+  await page.getByRole('dialog', { name: 'Confirm action' }).getByRole('button', { name: 'Confirm' }).click()
   await expect(page.locator('.document-title')).toContainText(name)
 }
 
 async function downloadFromButton(page: Page, name: string) {
   const download = page.waitForEvent('download')
-  await page.getByRole('button', { name }).click()
+  if (name === 'Export SVG' || name === 'Export PNG' || name === 'Export PDF') {
+    await clickToolbarMenuItem(page, 'Export', name)
+  } else {
+    await page.getByRole('button', { name }).click()
+  }
   const file = await download
   const path = await file.path()
   if (!path) throw new Error(`No download path for ${name}`)
@@ -51,12 +61,12 @@ async function downloadFromButton(page: Page, name: string) {
 
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => {
-    if (!sessionStorage.getItem('99draw:beta-smoke-seeded')) {
+    if (!sessionStorage.getItem('99diagrams:beta-smoke-seeded')) {
       localStorage.clear()
-      sessionStorage.setItem('99draw:beta-smoke-seeded', '1')
+      sessionStorage.setItem('99diagrams:beta-smoke-seeded', '1')
     }
-    localStorage.setItem('99draw:language', 'en')
-    localStorage.setItem('99draw:theme', 'light')
+    localStorage.setItem('99diagrams:language', 'en')
+    localStorage.setItem('99diagrams:theme', 'light')
   })
 })
 
@@ -85,8 +95,8 @@ for (const demo of demos) {
     await page.getByLabel('Connector label').fill('Beta path')
     await expect(page.getByLabel('Connector label')).toHaveValue('Beta path')
 
-    await page.getByRole('button', { name: 'Undo (Cmd/Ctrl+Z)' }).click()
-    await page.getByRole('button', { name: 'Redo (Cmd/Ctrl+Shift+Z)' }).click()
+    await clickToolbarMenuItem(page, 'Edit', 'Undo (Cmd/Ctrl+Z)')
+    await clickToolbarMenuItem(page, 'Edit', 'Redo (Cmd/Ctrl+Shift+Z)')
     await expect(page.locator('.react-flow__node').getByText(betaLabel, { exact: true })).toBeVisible()
 
     await page.waitForTimeout(1_000)
@@ -100,18 +110,18 @@ for (const demo of demos) {
     expect(visual.bytes.byteLength).toBeGreaterThan(100)
 
     const json = await downloadFromButton(page, 'Export file')
-    expect(json.name).toMatch(/\.99draw\.json$/)
+    expect(json.name).toMatch(/\.99diagrams\.json$/)
     const exported = JSON.parse(json.bytes.toString('utf8')) as ExportedDocument
     expect(exported.name).toBe(demo.name)
     expect(exported.pages[0].nodes.map((node) => node.data.label)).toContain(betaLabel)
     expect(exported.pages[0].edges.some((edge) => edge.label === 'Beta path')).toBe(true)
 
-    await page.locator('input[accept*=".99draw"]').setInputFiles(json.path)
+    await page.locator('input[accept*=".99diagrams"]').setInputFiles(json.path)
     await expect(page.locator('.react-flow__node').getByText(betaLabel, { exact: true })).toBeVisible()
 
-    await page.getByRole('button', { name: 'Light' }).click()
-    await expect(page.getByRole('button', { name: 'Dark' })).toBeVisible()
-    await page.getByRole('button', { name: 'Change language: VI' }).click()
-    await expect(page.getByRole('button', { name: 'Đổi ngôn ngữ: EN' })).toBeVisible()
+    await clickToolbarMenuItem(page, 'View', 'Light')
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark')
+    await page.getByRole('button', { name: 'Change language: Vietnamese' }).click()
+    await expect(page.getByRole('button', { name: 'Đổi ngôn ngữ: Tiếng Anh' })).toBeVisible()
   })
 }

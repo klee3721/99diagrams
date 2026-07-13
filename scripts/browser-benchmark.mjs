@@ -18,7 +18,7 @@ try {
   await waitForServer(origin)
   const browser = await chromium.launch()
   try {
-    console.log('99draw browser benchmark')
+    console.log('99 Diagrams browser benchmark')
     console.log('size,render_ms,pan_ms,zoom_ms,select_ms,dom_nodes,dom_edges')
     for (const size of sizes) {
       const result = await benchmarkSize(browser, size)
@@ -49,9 +49,9 @@ async function benchmarkSize(browser, size) {
   const snapshot = createSnapshot(size)
 
   await page.addInitScript((value) => {
-    localStorage.setItem('99draw:language', 'en')
-    localStorage.removeItem('99draw:active-document')
-    localStorage.setItem('99draw:document:v1', JSON.stringify({ version: 1, ...value }))
+    localStorage.setItem('99diagrams:language', 'en')
+    localStorage.removeItem('99diagrams:active-document')
+    localStorage.setItem('99diagrams:document:v1', JSON.stringify({ version: 1, ...value }))
     window.__BENCHMARK_START__ = performance.now()
   }, snapshot)
 

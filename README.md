@@ -1,6 +1,6 @@
-# 99draw
+# 99 Diagrams
 
-99draw là flowchart và workflow editor mã nguồn mở, chạy hoàn toàn trong trình
+99 Diagrams là flowchart và workflow editor mã nguồn mở, chạy hoàn toàn trong trình
 duyệt. Mục tiêu của dự án là một công cụ vẽ đơn giản, local-first và dễ tự host;
 không hướng tới sao chép toàn bộ draw.io.
 
@@ -15,7 +15,7 @@ không hướng tới sao chép toàn bộ draw.io.
   align/distribute/z-order, group/ungroup, undo/redo.
 * Pages, layer ordering/visibility/lock, recent documents, autosave cục bộ và
   import bằng nút mở hoặc kéo file vào canvas.
-* Xuất toàn bộ document, trang hiện tại hoặc phần chọn sang `.99draw.json`; xuất
+* Xuất toàn bộ document, trang hiện tại hoặc phần chọn sang `.99diagrams.json`; xuất
   SVG/PNG/PDF và sao chép PNG vào clipboard.
 * Command palette, template gallery, Mermaid flowchart import, CSV import,
   demo gallery, outline điều hướng hình/connector, ELK auto-layout qua Web
@@ -64,8 +64,8 @@ mới đóng góp: xem [docs/good-first-issues.md](docs/good-first-issues.md).
 
 ## Định dạng tệp
 
-99draw dùng JSON versioned. Tệp xuất có phần mở rộng đề xuất
-`.99draw.json`, gồm metadata document, pages, layers, nodes và edges. Parser có
+99 Diagrams dùng JSON versioned. Tệp xuất có phần mở rộng đề xuất
+`.99diagrams.json`, gồm metadata document, pages, layers, nodes và edges. Parser có
 migration registry cho snapshot legacy v1 và document v2. Các thuộc tính UI tạm
 thời như trạng thái chọn/kéo không được lưu.
 
@@ -85,7 +85,7 @@ Quyết định kiến trúc nền tảng được ghi trong
 Chính sách giấy phép đóng góp nằm trong
 [docs/adr/0002-inbound-contribution-license.md](docs/adr/0002-inbound-contribution-license.md).
 
-99draw dựa trên [React Flow](https://reactflow.dev/) (MIT). Tất cả icon hiện
+99 Diagrams dựa trên [React Flow](https://reactflow.dev/) (MIT). Tất cả icon hiện
 dùng từ Lucide (ISC); xem [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) trước
 khi phân phối bundle.
 
@@ -97,5 +97,5 @@ khi phân phối bundle.
 
 ## Bảo mật và giấy phép
 
-Xem [SECURITY.md](SECURITY.md) để báo lỗ hổng riêng tư. Mã nguồn 99draw được
-phát hành theo [MIT License](LICENSE).
+Xem [SECURITY.md](SECURITY.md) để báo lỗ hổng riêng tư. Mã nguồn 99 Diagrams được
+phát hành theo [GNU GPLv3](LICENSE).

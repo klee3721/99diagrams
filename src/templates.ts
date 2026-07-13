@@ -43,9 +43,9 @@ export const templates: DiagramTemplate[] = [
   {
     id: 'blank',
     name: 'Sơ đồ trống',
-    description: 'Bắt đầu với canvas trống',
+    description: 'Bắt đầu với vùng vẽ trống',
     copy: {
-      vi: { name: 'Sơ đồ trống', description: 'Bắt đầu với canvas trống', labels: [] },
+      vi: { name: 'Sơ đồ trống', description: 'Bắt đầu với vùng vẽ trống', labels: [] },
       en: { name: 'Blank diagram', description: 'Start with an empty canvas', labels: [] },
     },
     snapshot: () => ({ nodes: [], edges: [] }),
@@ -53,7 +53,7 @@ export const templates: DiagramTemplate[] = [
   makeTemplate(
     'basic-flow',
     ['start', 'process', 'decision', 'start'],
-    { name: 'Flowchart cơ bản', description: 'Bắt đầu, xử lý, điều kiện, kết thúc', labels: ['Bắt đầu', 'Xử lý yêu cầu', 'Hợp lệ?', 'Kết thúc'] },
+    { name: 'Lưu đồ cơ bản', description: 'Bắt đầu, xử lý, điều kiện, kết thúc', labels: ['Bắt đầu', 'Xử lý yêu cầu', 'Hợp lệ?', 'Kết thúc'] },
     { name: 'Basic flowchart', description: 'Start, process, condition, finish', labels: ['Start', 'Process request', 'Valid?', 'Finish'] },
   ),
   makeTemplate(
@@ -65,31 +65,31 @@ export const templates: DiagramTemplate[] = [
   makeTemplate(
     'incident',
     ['start', 'decision', 'process', 'document'],
-    { name: 'Xử lý sự cố', description: 'Phát hiện đến đóng sự cố', labels: ['Phát hiện', 'Phân loại', 'Giảm thiểu', 'Postmortem'] },
+    { name: 'Xử lý sự cố', description: 'Từ phát hiện đến đóng sự cố', labels: ['Phát hiện', 'Phân loại', 'Giảm thiểu', 'Tổng kết sự cố'] },
     { name: 'Incident response', description: 'From detection to closure', labels: ['Detect', 'Classify', 'Mitigate', 'Postmortem'] },
   ),
   makeTemplate(
     'cicd',
     ['start', 'process', 'decision', 'process'],
-    { name: 'CI/CD', description: 'Build, test và deploy', labels: ['Push code', 'Build', 'Test', 'Deploy'] },
+    { name: 'CI/CD', description: 'Biên dịch, kiểm thử và triển khai', labels: ['Đẩy mã', 'Biên dịch', 'Kiểm thử', 'Triển khai'] },
     { name: 'CI/CD', description: 'Build, test, and deploy', labels: ['Push code', 'Build', 'Test', 'Deploy'] },
   ),
   makeTemplate(
     'onboarding',
     ['start', 'process', 'swimlane', 'document'],
-    { name: 'Onboarding', description: 'Quy trình nhân sự mới', labels: ['Nhận offer', 'Chuẩn bị thiết bị', 'Ngày đầu', 'Đánh giá tuần 1'] },
+    { name: 'Tiếp nhận nhân sự mới', description: 'Quy trình cho người mới', labels: ['Nhận đề nghị', 'Chuẩn bị thiết bị', 'Ngày đầu', 'Đánh giá tuần 1'] },
     { name: 'Onboarding', description: 'New hire workflow', labels: ['Accept offer', 'Prepare equipment', 'First day', 'Week 1 review'] },
   ),
   makeTemplate(
     'support',
     ['start', 'decision', 'process', 'start'],
-    { name: 'Hỗ trợ khách hàng', description: 'Tiếp nhận và giải quyết ticket', labels: ['Ticket mới', 'Phân loại', 'Giải quyết', 'Đóng ticket'] },
+    { name: 'Hỗ trợ khách hàng', description: 'Tiếp nhận và giải quyết phiếu hỗ trợ', labels: ['Phiếu mới', 'Phân loại', 'Giải quyết', 'Đóng phiếu'] },
     { name: 'Customer support', description: 'Intake and resolve tickets', labels: ['New ticket', 'Triage', 'Resolve', 'Close ticket'] },
   ),
   makeTemplate(
     'release',
     ['process', 'process', 'decision', 'document'],
-    { name: 'Phát hành', description: 'Checklist release phần mềm', labels: ['Đóng tính năng', 'QA', 'Release?', 'Theo dõi'] },
+    { name: 'Phát hành', description: 'Danh sách kiểm tra phát hành phần mềm', labels: ['Khóa tính năng', 'Kiểm thử chất lượng', 'Phát hành?', 'Theo dõi'] },
     { name: 'Release', description: 'Software release checklist', labels: ['Feature freeze', 'QA', 'Release?', 'Monitor'] },
   ),
   makeTemplate(
@@ -107,13 +107,13 @@ export const templates: DiagramTemplate[] = [
   makeTemplate(
     'system',
     ['input', 'process', 'process', 'database'],
-    { name: 'System map', description: 'Client, API và database', labels: ['Client', 'API', 'Service', 'Database'] },
+    { name: 'Bản đồ hệ thống', description: 'Máy khách, API và cơ sở dữ liệu', labels: ['Máy khách', 'API', 'Dịch vụ', 'Cơ sở dữ liệu'] },
     { name: 'System map', description: 'Client, API, and database', labels: ['Client', 'API', 'Service', 'Database'] },
   ),
   makeTemplate(
     'retro',
     ['note', 'group', 'decision', 'document'],
-    { name: 'Retrospective', description: 'Thu thập và hành động', labels: ['Thu thập', 'Nhóm chủ đề', 'Chọn hành động', 'Theo dõi'] },
+    { name: 'Họp cải tiến', description: 'Thu thập nhận xét và chọn hành động', labels: ['Thu thập', 'Nhóm chủ đề', 'Chọn hành động', 'Theo dõi'] },
     { name: 'Retrospective', description: 'Collect insights and actions', labels: ['Collect', 'Group themes', 'Choose action', 'Follow up'] },
   ),
 ]

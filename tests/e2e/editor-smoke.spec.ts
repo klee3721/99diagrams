@@ -10,17 +10,23 @@ async function runCommand(page: import('@playwright/test').Page, query: string) 
   await expect(search).toBeHidden()
 }
 
+async function clickToolbarMenuItem(page: import('@playwright/test').Page, menu: string, item: string) {
+  const escapedItem = item.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  await page.getByRole('button', { name: `${menu} ▾` }).click()
+  await page.getByRole('menu').getByRole('menuitem', { name: new RegExp(`${escapedItem}$`) }).click()
+}
+
 test('creates, connects, persists, reopens, and exports a small diagram', async ({ page }) => {
   await page.addInitScript(() => {
-    localStorage.setItem('99draw:language', 'en')
+    localStorage.setItem('99diagrams:language', 'en')
   })
 
   await page.goto('/')
   await expect(page.getByRole('button', { name: 'Export file' })).toBeVisible()
 
-  page.once('dialog', (dialog) => dialog.accept())
   await runCommand(page, 'Open template gallery')
   await page.getByRole('button', { name: /Blank diagram/ }).click()
+  await page.getByRole('dialog', { name: 'Confirm action' }).getByRole('button', { name: 'Confirm' }).click()
   await expect(page.locator('.react-flow__node')).toHaveCount(0)
 
   await runCommand(page, 'Add Process')
@@ -39,33 +45,33 @@ test('creates, connects, persists, reopens, and exports a small diagram', async 
   const download = page.waitForEvent('download')
   await page.getByRole('button', { name: 'Export file' }).click()
   const file = await download
-  expect(file.suggestedFilename()).toMatch(/\.99draw\.json$/)
+  expect(file.suggestedFilename()).toMatch(/\.99diagrams\.json$/)
 
-  const svgFile = await downloadFromButton(page, 'Export SVG')
+  const svgFile = await downloadFromToolbarMenu(page, 'Export SVG')
   expect(svgFile.name).toMatch(/\.svg$/)
   expect(svgFile.bytes.toString('utf8')).toContain('<svg')
   expect(svgFile.bytes.toString('utf8')).toContain('Process')
 
-  const pngFile = await downloadFromButton(page, 'Export PNG')
+  const pngFile = await downloadFromToolbarMenu(page, 'Export PNG')
   expect(pngFile.name).toMatch(/\.png$/)
   expect([...pngFile.bytes.subarray(0, 8)]).toEqual([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])
 
-  const pdfFile = await downloadFromButton(page, 'Export PDF')
+  const pdfFile = await downloadFromToolbarMenu(page, 'Export PDF')
   expect(pdfFile.name).toMatch(/\.pdf$/)
   expect(pdfFile.bytes.subarray(0, 4).toString('utf8')).toBe('%PDF')
 })
 
 test('deletes grouped nodes without leaving orphaned children or edges', async ({ page }) => {
   await page.addInitScript(() => {
-    localStorage.setItem('99draw:language', 'en')
+    localStorage.setItem('99diagrams:language', 'en')
   })
 
   await page.goto('/')
   await expect(page.getByRole('button', { name: 'Export file' })).toBeVisible()
 
-  page.once('dialog', (dialog) => dialog.accept())
   await runCommand(page, 'Open template gallery')
   await page.getByRole('button', { name: /Blank diagram/ }).click()
+  await page.getByRole('dialog', { name: 'Confirm action' }).getByRole('button', { name: 'Confirm' }).click()
 
   await runCommand(page, 'Add Process')
   await runCommand(page, 'Add Decision')
@@ -88,17 +94,17 @@ test('deletes grouped nodes without leaving orphaned children or edges', async (
 
 test('opens an editable demo from the demo gallery', async ({ page }) => {
   await page.addInitScript(() => {
-    localStorage.setItem('99draw:language', 'en')
+    localStorage.setItem('99diagrams:language', 'en')
   })
 
   await page.goto('/')
   await expect(page.getByRole('button', { name: 'Export file' })).toBeVisible()
 
-  await page.getByRole('button', { name: 'Demos' }).click()
+  await clickToolbarMenuItem(page, 'Insert', 'Demos')
   await expect(page.getByRole('dialog', { name: 'Demo gallery' })).toBeVisible()
 
-  page.once('dialog', (dialog) => dialog.accept())
   await page.getByRole('button', { name: /Product flow/ }).click()
+  await page.getByRole('dialog', { name: 'Confirm action' }).getByRole('button', { name: 'Confirm' }).click()
 
   await expect(page.locator('.react-flow__node')).toHaveCount(9)
   await expect(page.locator('.react-flow__edge')).toHaveCount(10)
@@ -108,7 +114,7 @@ test('opens an editable demo from the demo gallery', async ({ page }) => {
 test('uses a read-only canvas on small screens', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 800 })
   await page.addInitScript(() => {
-    localStorage.setItem('99draw:language', 'en')
+    localStorage.setItem('99diagrams:language', 'en')
   })
 
   await page.goto('/')
@@ -116,15 +122,14 @@ test('uses a read-only canvas on small screens', async ({ page }) => {
   await expect(page.getByRole('status')).toContainText('Small-screen view mode')
   await expect(page.locator('.react-flow__node')).toHaveCount(5)
 
-  const dialogOpened = page.waitForEvent('dialog', { timeout: 500 }).then(() => true).catch(() => false)
   await page.locator('.react-flow__node').first().dblclick({ force: true })
-  expect(await dialogOpened).toBe(false)
+  await expect(page.getByRole('dialog', { name: 'Shape label' })).toHaveCount(0)
 })
 
 test('shows swimlane lane membership for child nodes', async ({ page }) => {
   await page.addInitScript(() => {
-    localStorage.setItem('99draw:language', 'en')
-    localStorage.setItem('99draw:document:v1', JSON.stringify({
+    localStorage.setItem('99diagrams:language', 'en')
+    localStorage.setItem('99diagrams:document:v1', JSON.stringify({
       version: 1,
       nodes: [
         {
@@ -171,6 +176,18 @@ test('shows swimlane lane membership for child nodes', async ({ page }) => {
 async function downloadFromButton(page: import('@playwright/test').Page, name: string) {
   const download = page.waitForEvent('download')
   await page.getByRole('button', { name }).click()
+  const file = await download
+  const path = await file.path()
+  if (!path) throw new Error(`No download path for ${name}`)
+  return {
+    name: file.suggestedFilename(),
+    bytes: await readFile(path),
+  }
+}
+
+async function downloadFromToolbarMenu(page: import('@playwright/test').Page, name: string) {
+  const download = page.waitForEvent('download')
+  await clickToolbarMenuItem(page, 'Export', name)
   const file = await download
   const path = await file.path()
   if (!path) throw new Error(`No download path for ${name}`)

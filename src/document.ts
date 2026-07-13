@@ -2,6 +2,7 @@ import type { Edge } from '@xyflow/react'
 import {
   cloneSnapshot,
   createStarterDiagram,
+  nodeDimensions,
   parseDocument,
   type DiagramNode,
   type DiagramSnapshot,
@@ -16,10 +17,21 @@ export type DiagramLayer = {
   locked: boolean
 }
 
+export type PageBackground = 'paper' | 'white'
+
+export type PageFrame = {
+  x: number
+  y: number
+  width: number
+  height: number
+  background: PageBackground
+}
+
 export type DiagramPage = DiagramSnapshot & {
   id: string
   name: string
   layers: DiagramLayer[]
+  frame: PageFrame
 }
 
 export type DiagramDocument = {
@@ -42,6 +54,7 @@ export type DocumentSnapshotOptions = {
   createdAt?: string
   updatedAt?: string
   layers?: DiagramLayer[]
+  frame?: PageFrame
 }
 
 type DocumentMigration = {
@@ -66,11 +79,13 @@ export function createDocument(name = 'Untitled diagram', snapshot: DiagramSnaps
 }
 
 export function createPage(name: string, snapshot: DiagramSnapshot = { nodes: [], edges: [] }, layerName = 'Default'): DiagramPage {
+  const copy = cloneSnapshot(snapshot)
   return {
     id: crypto.randomUUID(),
     name,
-    ...cloneSnapshot(snapshot),
+    ...copy,
     layers: [createLayer(layerName)],
+    frame: expandFrameToFitNodes(defaultPageFrame(), copy.nodes),
   }
 }
 
@@ -87,6 +102,7 @@ export function createDocumentFromSnapshot(name: string, snapshot: DiagramSnapsh
     name: options.pageName ?? 'Page 1',
     ...cloneSnapshot(snapshot),
     layers: options.layers?.length ? options.layers.map((layer) => ({ ...layer })) : [createLayer(options.layerName ?? 'Default')],
+    frame: normalizePageFrame(options.frame, snapshot.nodes),
   }
 
   return {
@@ -134,6 +150,7 @@ export function duplicatePage(document: DiagramDocument, pageId: string): Diagra
     id: crypto.randomUUID(),
     name: `${source.name} (copy)`,
     layers: source.layers.map((layer) => ({ ...layer, id: crypto.randomUUID() })),
+    frame: { ...source.frame },
   }
   return { ...document, pages: [...document.pages, page], activePageId: page.id, updatedAt: new Date().toISOString() }
 }
@@ -216,7 +233,7 @@ function parsePage(value: unknown): DiagramPage | null {
   const snapshot = parseDocument(candidate)
   if (!snapshot) return null
   const layers = candidate.layers.filter(isLayer)
-  return layers.length === candidate.layers.length && layers.length > 0 ? { id: candidate.id, name: candidate.name, ...snapshot, layers } : null
+  return layers.length === candidate.layers.length && layers.length > 0 ? { id: candidate.id, name: candidate.name, ...snapshot, layers, frame: normalizePageFrame(candidate.frame, snapshot.nodes) } : null
 }
 
 function isLayer(value: unknown): value is DiagramLayer {
@@ -227,4 +244,56 @@ function isLayer(value: unknown): value is DiagramLayer {
 
 function isObject(value: unknown): value is Record<string, unknown> {
   return !!value && typeof value === 'object'
+}
+
+export function defaultPageFrame(): PageFrame {
+  return { x: 0, y: 0, width: 1200, height: 800, background: 'paper' }
+}
+
+export function normalizePageFrame(value: unknown, nodes: DiagramNode[] = []): PageFrame {
+  if (!isObject(value)) return expandFrameToFitNodes(defaultPageFrame(), nodes)
+  const background = value.background === 'white' ? 'white' : 'paper'
+  const frame: PageFrame = {
+    x: safeFrameNumber(value.x, 0),
+    y: safeFrameNumber(value.y, 0),
+    width: safeFrameNumber(value.width, 1200),
+    height: safeFrameNumber(value.height, 800),
+    background,
+  }
+  return expandFrameToFitNodes(frame, nodes)
+}
+
+export function expandFrameToFitNodes(frame: PageFrame, nodes: DiagramNode[], padding = 96): PageFrame {
+  const topLevelNodes = nodes.filter((node) => !node.parentId)
+  if (!topLevelNodes.length) return { ...frame }
+
+  let left = frame.x
+  let top = frame.y
+  let right = frame.x + frame.width
+  let bottom = frame.y + frame.height
+
+  for (const node of topLevelNodes) {
+    const size = nodeDimensions(node)
+    const nodeLeft = node.position.x
+    const nodeTop = node.position.y
+    const nodeRight = node.position.x + size.width
+    const nodeBottom = node.position.y + size.height
+
+    if (nodeLeft < left) left = nodeLeft - padding
+    if (nodeTop < top) top = nodeTop - padding
+    if (nodeRight > right) right = nodeRight + padding
+    if (nodeBottom > bottom) bottom = nodeBottom + padding
+  }
+
+  return {
+    ...frame,
+    x: Math.floor(left),
+    y: Math.floor(top),
+    width: Math.ceil(right - left),
+    height: Math.ceil(bottom - top),
+  }
+}
+
+function safeFrameNumber(value: unknown, fallback: number) {
+  return typeof value === 'number' && Number.isFinite(value) ? value : fallback
 }

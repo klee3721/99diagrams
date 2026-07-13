@@ -11,7 +11,7 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, info: ErrorInfo) {
-    console.error('99draw editor error', error, info)
+    console.error('99 Diagrams editor error', error, info)
   }
 
   render() {
@@ -19,9 +19,9 @@ export class ErrorBoundary extends Component<Props, State> {
 
     return <main className="error-boundary" role="alert">
       <div>
-        <h1>99draw gặp sự cố</h1>
+        <h1>99 Diagrams gặp sự cố</h1>
         <p>Sơ đồ đã lưu cục bộ vẫn còn trên thiết bị. Hãy tải lại trang để thử khôi phục phiên làm việc.</p>
-        <button onClick={() => window.location.reload()}>Tải lại 99draw</button>
+        <button onClick={() => window.location.reload()}>Tải lại 99 Diagrams</button>
       </div>
     </main>
   }

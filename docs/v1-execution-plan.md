@@ -1,8 +1,8 @@
-# Kế hoạch thực thi 99draw v1.0
+# Kế hoạch thực thi 99 Diagrams v1.0
 
 ## Mục tiêu phát hành
 
-99draw v1.0 là flowchart và workflow editor mã nguồn mở, local-first, tự host
+99 Diagrams v1.0 là flowchart và workflow editor mã nguồn mở, local-first, tự host
 được và không bắt buộc tài khoản. Người dùng phải có thể tạo, chỉnh sửa, lưu,
 mở và xuất sơ đồ một cách đáng tin cậy.
 
@@ -17,11 +17,11 @@ plugin API và tương thích `.drawio` đầy đủ được hoãn sang các ph
 | Nodes | start/end, process, decision, input/output, document, database, note, group, swimlane |
 | Edges | straight, smoothstep, orthogonal, reconnect, marker, label, color, width, dash, animation |
 | Editing | text edit, resize, duplicate, delete, copy/paste, multi-select, align, distribute, z-order, group |
-| Files | autosave, recent files, validated `.99draw.json`, migration, drag-drop open |
+| Files | autosave, recent files, validated `.99diagrams.json`, migration, drag-drop open |
 | Output | JSON, SVG, PNG, PDF, copy image |
 | Productivity | keyboard shortcuts, command palette, templates, auto-layout, Mermaid/CSV import |
 | Product quality | PWA/offline, Việt/Anh, WCAG AA desktop, dark/high contrast, documentation |
-| OSS | CI, MIT, security policy, contribution guide, issue templates, self-host guide |
+| OSS | CI, GPL-3.0-only, security policy, contribution guide, issue templates, self-host guide |
 
 ## Kiến trúc bắt buộc
 
@@ -29,7 +29,7 @@ plugin API và tương thích `.drawio` đầy đủ được hoãn sang các ph
 React UI -> document commands -> React Flow adapter -> persistence/import/export
 ```
 
-* React Flow chỉ render và xử lý tương tác; format `.99draw` không bị khóa vào API của nó.
+* React Flow chỉ render và xử lý tương tác; format `.99diagrams` không bị khóa vào API của nó.
 * Mọi mutation là command transaction để undo/redo, autosave và collaboration tương lai cùng dùng.
 * Mọi file import phải validate/sanitize trước khi vào state.
 * Tính năng mới phải có fixture, test và đường keyboard tương đương thao tác chuột.
@@ -170,7 +170,7 @@ patch nếu phát hiện blocker.
 
 1. Browser support: hai phiên bản mới nhất của Chrome, Edge, Firefox và Safari.
 2. V1 chỉ local-first, không backend bắt buộc.
-3. `.99draw.json` là format canonical; không hứa `.drawio` cho v1.
+3. `.99diagrams.json` là format canonical; không hứa `.drawio` cho v1.
 4. Branding, logo và shape assets phải độc lập với draw.io.
 5. Một maintainer cuối cùng duyệt schema/architecture; thay đổi lớn dùng ADR công khai.
 

@@ -12,15 +12,15 @@ async function runCommand(page: import('@playwright/test').Page, query: string) 
 
 test('creates a 20-node flowchart with keyboard commands and preserves it', async ({ page }) => {
   await page.addInitScript(() => {
-    localStorage.setItem('99draw:language', 'en')
+    localStorage.setItem('99diagrams:language', 'en')
   })
 
   await page.goto('/')
   await expect(page.getByRole('button', { name: 'Export file' })).toBeVisible()
 
-  page.once('dialog', (dialog) => dialog.accept())
   await runCommand(page, 'Open template gallery')
   await page.getByRole('button', { name: /Blank diagram/ }).click()
+  await page.getByRole('dialog', { name: 'Confirm action' }).getByRole('button', { name: 'Confirm' }).click()
   await expect(page.locator('.react-flow__node')).toHaveCount(0)
 
   for (let index = 0; index < 20; index += 1) {

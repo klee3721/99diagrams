@@ -27,7 +27,7 @@ localStorage and drives Chromium through Playwright.
 | 5,000 | 5,919.70 ms | 1,264.31 ms | 1,043.51 ms | 27.70 ms | 5,000 | 4,999 |
 
 These browser numbers are interaction latency measurements, not a full FPS lab.
-They are enough to set a conservative v1 expectation: 99draw is comfortable for
+They are enough to set a conservative v1 expectation: 99 Diagrams is comfortable for
 hundreds of nodes, usable around 1,000 nodes on desktop, and 5,000 nodes should
 be treated as a stress-test size rather than a smooth editing target until
 viewport virtualization/level-of-detail work lands.
@@ -37,13 +37,13 @@ viewport virtualization/level-of-detail work lands.
 ELK layout runs through `elk-api` with the packaged `elk-worker.min.js` Web
 Worker asset, so the heavy layout computation does not execute on the main
 React/UI thread. Very large graphs can still exceed ELK's internal stack limits;
-for graphs with at least 2,000 nodes, 99draw falls back to a deterministic grid
+for graphs with at least 2,000 nodes, 99 Diagrams falls back to a deterministic grid
 layout instead of failing the user action.
 
 ## Workflow baseline
 
 Measured on the same machine with `npm run benchmark:workflow`, which builds the
-production app, imports `.99draw.json` files through the UI, runs auto-layout and
+production app, imports `.99diagrams.json` files through the UI, runs auto-layout and
 downloads representative exports.
 
 | Nodes | JSON size | Import/open | Auto-layout | DOM nodes | DOM edges |

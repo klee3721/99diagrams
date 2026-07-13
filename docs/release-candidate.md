@@ -1,12 +1,12 @@
-# 99draw v1.0 release candidate notes
+# 99 Diagrams v1.0 release candidate notes
 
 These notes record the release-candidate evidence used for `v1.0.0` and remain
 the baseline for any `v1.0.x` patch release.
 
 ## Current RC scope
 
-99draw v1.0 is a local-first flowchart/workflow editor. It supports editing,
-autosave, recent documents, validated `.99draw.json` import, templates, demo
+99 Diagrams v1.0 is a local-first flowchart/workflow editor. It supports editing,
+autosave, recent documents, validated `.99diagrams.json` import, templates, demo
 gallery, Mermaid flowchart import, CSV import, ELK auto-layout, pages/layers,
 SVG/PNG/PDF export, PWA shell and static/Docker self-hosting.
 
@@ -64,7 +64,7 @@ in Chromium.
 | Model benchmark | `npm run benchmark` |
 | Browser benchmark | `npm run benchmark:browser` |
 | Workflow benchmark | `npm run benchmark:workflow` |
-| SBOM | `npm run --silent sbom > 99draw-sbom.cdx.json` |
+| SBOM | `npm run --silent sbom > 99-diagrams-sbom.cdx.json` |
 | Manual static preview | `npm run build` then `npm run preview` |
 | Docker self-host smoke | `npm run test:docker` |
 
